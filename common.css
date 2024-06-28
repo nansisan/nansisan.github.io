@@ -27,6 +27,10 @@ hr {
 a {
     color: #add8e6;
 }
+.menu {
+    text-align: center;
+	background: #282828;
+}
 .hr-red {
     border: 1px solid var(--red);
 }
