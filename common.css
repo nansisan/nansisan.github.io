@@ -24,6 +24,9 @@ hr {
     padding: 0;
     border: 0;
 }
+a {
+    color: #add8e6;
+}
 .hr-red {
     border: 1px solid var(--red);
 }
