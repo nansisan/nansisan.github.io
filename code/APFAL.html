@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>任意精度浮動小数点演算ライブラリ ver0.3 使い方</title>
+    <style>
+        /* ベーススタイル */
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+            color: #333;
+            padding: 4px 10%;
+        }
+
+        /* テーブル */
+        table {
+            width: 100%;
+            margin-bottom: 20px;
+            border-collapse: collapse;
+        }
+
+        table,
+        th,
+        td {
+            border: 1px solid #ddd;
+        }
+
+        th,
+        td {
+            padding: 12px;
+            text-align: center;
+        }
+
+        th {
+            background-color: #50b3a2;
+            color: white;
+        }
+
+        /* コードブロック */
+        pre {
+            position: relative;
+            background: #333;
+            color: #fff;
+            padding: 15px;
+            overflow: auto;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+
+        pre::after {
+            content: "クリックしてコピー";
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: #50b3a2;
+            color: white;
+            padding: 5px;
+            border-radius: 5px;
+            font-size: 12px;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        pre:hover::after {
+            opacity: 1;
+        }
+
+        code {
+            font-family: "Courier New", Courier, monospace;
+        }
+
+        /* 引用 */
+        blockquote {
+            margin: 20px 0;
+            padding: 10px 20px;
+            background: #f9f9f9;
+            border-left: 10px solid #ccc;
+        }
+
+        blockquote p {
+            font-style: italic;
+            color: #555;
+        }
+    </style>
+    <script src="https://raw.githubusercontent.com/nansisan/APFAL/main/APFAL.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const preElements = document.querySelectorAll('pre');
+            preElements.forEach((pre) => {
+                pre.addEventListener('click', function() {
+                    const code = this.innerText;
+                    navigator.clipboard.writeText(code).then(() => {
+                        alert('コードがコピーされました！');
+                    }).catch(err => {
+                        console.error('コピーに失敗しました: ', err);
+                    });
+                });
+            });
+        });
+    </script>
+</head>
+
+<body>
+    <h1 id="任意精度浮動小数点演算ライブラリver030-使い方"><strong>任意精度浮動小数点演算ライブラリver0.3.0 使い方</strong></h1>
+    <p>このライブラリは任意精度の浮動小数点演算をサポートするJavaScriptのクラスです。基本的な演算（加算、減算、乗算、除算）から、高度な数学関数（累乗、階乗、組み合わせ、順列）まで、幅広くサポートしています。</p>
+    <h2 id="目次">目次</h2>
+    <ul>
+        <li>仕様</li>
+        <li>関数の名称、解説</li>
+        <li>例</li>
+        <li>参考</li>
+        <li>ライセンス<h2 id="仕様">仕様</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th align="center">項目</th>
+                        <th align="center">値</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td align="center">演算可能桁数</td>
+                        <td align="center">323228496.6桁</td>
+                    </tr>
+                    <tr>
+                        <td align="center">関数種類</td>
+                        <td align="center">22種</td>
+                    </tr>
+                    <tr>
+                        <td align="center">定数種類</td>
+                        <td align="center">2種</td>
+                    </tr>
+                    <tr>
+                        <td align="center">動作要件</td>
+                        <td align="center">ES2020対応のブラウザ(それ以外は知らん)</td>
+                    </tr>
+                    <tr>
+                        <td align="center">入力型</td>
+                        <td align="center">Number, String, BigInt</td>
+                    </tr>
+                    <tr>
+                        <td align="center">出力型</td>
+                        <td align="center">String, Boolean</td>
+                    </tr>
+                </tbody>
+            </table>
+            <h3 id="コンストラクタ">コンストラクタ</h3>
+        </li>
+        <li><code>constructor()</code>
+            <ul>
+                <li>新しい <code>Calculator</code> オブジェクトを作成します。</li>
+            </ul>
+        </li>
+    </ul>
+    <h3 id="メソッド">メソッド</h3>
+    <h4 id="基本演算">基本演算</h4>
+    <ul>
+        <li>
+            <p><code>add(a, b)</code></p>
+            <ul>
+                <li>加算を行います。</li>
+                <li>引数：<ul>
+                        <li><code>a</code>: 任意精度の数値（数値、文字列、またはBigInt）</li>
+                        <li><code>b</code>: 任意精度の数値（数値、文字列、またはBigInt）</li>
+                    </ul>
+                </li>
+                <li>戻り値： <code>a</code> と <code>b</code> の和</li>
+            </ul>
+        </li>
+        <li>
+            <p><code>subtract(a, b)</code></p>
+            <ul>
+                <li>減算を行います。</li>
+                <li>引数：<ul>
+                        <li><code>a</code>: 任意精度の数値（数値、文字列、またはBigInt）</li>
+                        <li><code>b</code>: 任意精度の数値（数値、文字列、またはBigInt）</li>
+                    </ul>
+                </li>
+                <li>戻り値： <code>a</code> から <code>b</code> の差</li>
+            </ul>
+        </li>
+        <li>
+            <p><code>multiply(a, b)</code></p>
+            <ul>
+                <li>乗算を行います。</li>
+                <li>引数：<ul>
+                        <li><code>a</code>: 任意精度の数値（数値、文字列、またはBigInt）</li>
+                        <li><code>b</code>: 任意精度の数値（数値、文字列、またはBigInt）</li>
+                    </ul>
+                </li>
+                <li>戻り値： <code>a</code> と <code>b</code> の積</li>
+            </ul>
+        </li>
+        <li>
+            <p><code>divide(a, b, decimalPlaces)</code></p>
+            <ul>
+                <li>除算を行います。</li>
+                <li>引数：<ul>
+                        <li><code>a</code>: 任意精度の数値（数値、文字列、またはBigInt）</li>
+                        <li><code>b</code>: 任意精度の数値（数値、文字列、またはBigInt）</li>
+                        <li><code>decimalPlaces</code>: 結果の小数点以下の桁数（数値）</li>
+                    </ul>
+                </li>
+                <li>戻り値： <code>a</code> を <code>b</code> の商</li>
+            </ul>
+        </li>
+    </ul>
+    <h4 id="高度な演算">高度な演算</h4>
+    <ul>
+        <li>
+            <p><code>intpow(a, b)</code></p>
+            <ul>
+                <li>整数の累乗を計算します。</li>
+                <li>引数：<ul>
+                        <li><code>a</code>: 底（数値、文字列、またはBigInt）</li>
+                        <li><code>b</code>: 指数（数値、文字列、またはBigInt）</li>
+                    </ul>
+                </li>
+                <li>戻り値： <code>a</code> の <code>b</code> 乗</li>
+            </ul>
+        </li>
+        <li>
+            <p><code>intpow(a, b)</code></p>
+            <ul>
+                <li>aが少数の場合の累乗を計算します。</li>
+                <li>引数：<ul>
+                        <li><code>a</code>: 底（数値、文字列、またはBigInt）</li>
+                        <li><code>b</code>: 指数（数値、文字列、またはBigInt）</li>
+                    </ul>
+                </li>
+                <li>戻り値： <code>a</code> の <code>b</code> 乗</li>
+            </ul>
+        </li>
+        <li>
+            <p><code>factorial(a)</code></p>
+            <ul>
+                <li>階乗を計算します。</li>
+                <li>引数：<ul>
+                        <li><code>a</code>: 階乗を計算する数値（数値、文字列、またはBigInt）</li>
+                    </ul>
+                </li>
+                <li>戻り値： <code>a</code> の階乗</li>
+            </ul>
+        </li>
+        <li>
+            <p><code>product(a, b)</code></p>
+            <ul>
+                <li>aからbまでの積を計算します。</li>
+                <li>引数：<ul>
+                        <li><code>a</code>: 最小値（数値、文字列、またはBigInt）</li>
+                        <li><code>b</code>: 最大値（数値、文字列、またはBigInt）</li>
+                    </ul>
+                </li>
+                <li>戻り値： <code>a</code> の階乗</li>
+            </ul>
+        </li>
+        <li>
+            <p><code>product(a, b)</code></p>
+            <ul>
+                <li>aからbまでの和を計算します。</li>
+                <li>引数：<ul>
+                        <li><code>a</code>: 最小値（数値、文字列、またはBigInt）</li>
+                        <li><code>b</code>: 最大値（数値、文字列、またはBigInt）</li>
+                    </ul>
+                </li>
+                <li>戻り値： <code>a</code> の階乗</li>
+            </ul>
+        </li>
+        <li>
+            <p><code>nCr(n, r)</code></p>
+            <ul>
+                <li>組み合わせを計算します。</li>
+                <li>引数：<ul>
+                        <li><code>n</code>: 母集団のサイズ（数値、文字列、またはBigInt）</li>
+                        <li><code>r</code>: 選択する要素の数（数値、文字列、またはBigInt）</li>
+                    </ul>
+                </li>
+                <li>戻り値： <code>n</code> 個から <code>r</code> 個を選ぶ組み合わせの数</li>
+            </ul>
+        </li>
+        <li>
+            <p><code>nPr(n, r)</code></p>
+            <ul>
+                <li>順列を計算します。</li>
+                <li>引数：<ul>
+                        <li><code>n</code>: 母集団のサイズ（数値、文字列、またはBigInt）</li>
+                        <li><code>r</code>: 選択する要素の数（数値、文字列、またはBigInt）</li>
+                    </ul>
+                </li>
+                <li>戻り値： <code>n</code> 個から <code>r</code> 個を選ぶ順列の数</li>
+            </ul>
+        </li>
+        <li>
+            <p><code>sqrt(a, decimalPlaces)</code></p>
+            <ul>
+                <li>平方根を計算します。</li>
+                <li>引数：<ul>
+                        <li><code>a</code>: 平方根を計算する数値（数値、文字列、またはBigInt）</li>
+                        <li><code>decimalPlaces</code>: 結果の小数点以下の桁数（数値）</li>
+                    </ul>
+                </li>
+                <li>戻り値： <code>a</code> の平方根</li>
+            </ul>
+        </li>
+    </ul>
+    <h4 id="補助関数">補助関数</h4>
+    <ul>
+        <li>
+            <p><code>inputCheck(a)</code></p>
+            <ul>
+                <li>入力を検証し、適切な形式に変換します。</li>
+                <li>引数：<ul>
+                        <li><code>a</code>: 検証する数値（数値、文字列、またはBigInt）</li>
+                    </ul>
+                </li>
+                <li>戻り値： 検証された数値</li>
+            </ul>
+        </li>
+        <li>
+            <p><code>normalize(a)</code></p>
+            <ul>
+                <li>数値を正規化します。</li>
+                <li>引数：<ul>
+                        <li><code>a</code>: 正規化する数値（数値、文字列、またはBigInt）</li>
+                    </ul>
+                </li>
+                <li>戻り値： 正規化された数値</li>
+            </ul>
+        </li>
+        <li>
+            <p><code>mod(a, b)</code></p>
+            <ul>
+                <li>剰余を計算します。</li>
+                <li>引数：<ul>
+                        <li><code>a</code>: 被除数（数値、文字列、またはBigInt）</li>
+                        <li><code>b</code>: 除数（数値、文字列、またはBigInt）</li>
+                    </ul>
+                </li>
+                <li>戻り値： <code>a</code> を <code>b</code> で割った剰余</li>
+            </ul>
+        </li>
+        <li>
+            <p><code>abs(a)</code></p>
+            <ul>
+                <li>絶対値を計算します。</li>
+                <li>引数：<ul>
+                        <li><code>a</code>: 絶対値を計算する数値（数値、文字列、またはBigInt）</li>
+                    </ul>
+                </li>
+                <li>戻り値： <code>a</code> の絶対値</li>
+            </ul>
+        </li>
+    </ul>
+    <h4 id="端数処理">端数処理</h4>
+    <ul>
+        <li>
+            <p><code>floor(a, decimalPlaces)</code></p>
+            <ul>
+                <li>数値を切り捨てます。</li>
+                <li>引数：<ul>
+                        <li><code>a</code>: 切り捨てる数値（数値、文字列、またはBigInt）</li>
+                        <li><code>decimalPlaces</code>: 小数点以下の桁数（数値）</li>
+                    </ul>
+                </li>
+                <li>戻り値： <code>a</code> を切り捨てた結果</li>
+            </ul>
+        </li>
+        <li>
+            <p><code>ceil(a, decimalPlaces)</code></p>
+            <ul>
+                <li>数値を切り上げます。</li>
+                <li>引数：<ul>
+                        <li><code>a</code>: 切り上げる数値（数値、文字列、またはBigInt）</li>
+                        <li><code>decimalPlaces</code>: 小数点以下の桁数（数値）</li>
+                    </ul>
+                </li>
+                <li>戻り値： <code>a</code> を切り上げた結果</li>
+            </ul>
+        </li>
+        <li>
+            <p><code>round(a, decimalPlaces)</code></p>
+            <ul>
+                <li>数値を四捨五入します。</li>
+                <li>引数：<ul>
+                        <li><code>a</code>: 四捨五入する数値（数値、文字列、またはBigInt）</li>
+                        <li><code>decimalPlaces</code>: 小数点以下の桁数（数値）</li>
+                    </ul>
+                </li>
+                <li>戻り値： <code>a</code> を四捨五入した結果</li>
+            </ul>
+        </li>
+    </ul>
+    <h4 id="比較処理">比較処理</h4>
+    <ul>
+        <li>
+            <p><code>greaterThan(a, b)</code></p>
+            <ul>
+                <li>数値を比較します。</li>
+                <li>引数：<ul>
+                        <li><code>a</code>: 比較する数値</li>
+                        <li><code>b</code>: 比較する数値</li>
+                    </ul>
+                </li>
+                <li>戻り値： <code>a</code> &lt; <code>b</code> であるか。</li>
+            </ul>
+        </li>
+        <li>
+            <p><code>lessThan(a, b)</code></p>
+            <ul>
+                <li>数値を比較します。</li>
+                <li>引数：<ul>
+                        <li><code>a</code>: 比較する数値</li>
+                        <li><code>b</code>: 比較する数値</li>
+                    </ul>
+                </li>
+                <li>戻り値： <code>a</code> &lt; <code>b</code> であるか。</li>
+            </ul>
+        </li>
+        <li>
+            <p><code>equals(a, b)</code></p>
+            <ul>
+                <li>数値を比較します。</li>
+                <li>引数：<ul>
+                        <li><code>a</code>: 比較する数値</li>
+                        <li><code>b</code>: 比較する数値</li>
+                    </ul>
+                </li>
+                <li>戻り値： <code>a</code> = <code>b</code> であるか。</li>
+            </ul>
+        </li>
+    </ul>
+    <h4 id="定数">定数</h4>
+    <ul>
+        <li>
+            <p><code>PI(decimalPlaces)</code></p>
+            <ul>
+                <li>円周率を出します。</li>
+                <li>引数：<ul>
+                        <li><code>decimalPlaces</code></li>
+                    </ul>
+                </li>
+                <li>戻り値： 円周率</li>
+            </ul>
+        </li>
+        <li>
+            <p><code>sqrt2(decimalPlaces)</code></p>
+            <ul>
+                <li>2の平方根を出します。</li>
+                <li>引数：<ul>
+                        <li><code>decimalPlaces</code></li>
+                    </ul>
+                </li>
+                <li>戻り値： 2の平方根</li>
+            </ul>
+        </li>
+    </ul>
+    <p>これらのメソッドは、文字列または数値を引数として受け取ります。結果は文字列として返されます。このライブラリは、JavaScriptの数値型の精度制限を回避して、より正確な計算が可能になります。しかし、このコードは文字列の操作をかなり扱うため、計算速度が遅くなる可能性があります。したがって、高速な計算が必要な場合や精度がそれほど重要でない場合は、JavaScript の標準的な算術演算子を使用することをお勧めします。</p>
+    <blockquote>
+        <p>注:Product関数の引数及びpowのb引数は小数点に対応していません。また関数使用後に正規化関数を実行することを推奨します。
+            decimalPlacesはデフォルトで20です。
+            decimalPlacesは省略可能です。</p>
+    </blockquote>
+    <h2 id="例">例</h2>
+    <pre><code class="language-js">calc.add(3,0.1415926535);
+//-&gt;&#39;3.1415926535&#39;
+calc.divide(22,7,20);
+//-&gt;&#39;3.14285714285714285714
+//Normalize関数で正規化
+calc.subtract(1.61,1.97)
+//-&gt; -.36
+normalize(calc.subtract(1.61,1.97))
+//-&gt;&#39;-0.36&#39;</code></pre>
+    <h2 id="参考">参考</h2>
+    <ul>
+        <li>bing AI(乗算、除算の作成)</li>
+        <li>qiita(markdownの作成)</li>
+        <li>teratail(加算コードの修正)</li>
+        <li>MDN(仕様確認)</li>
+    </ul>
+    <h2 id="ライセンス">ライセンス</h2>
+    <p>MITライセンスです。</p>
+    <h2 id="免責事項">免責事項</h2>
+    <ul>
+        <li>このプログラムを使用したことによる損害の発生は一切保証しません。</li>
+        <li>このプログラムは趣味で作っているものでありバグが多く含まれる可能性があります。自己責任でご使用ください。</li>
+    </ul>
+    <h2 id="更新履歴">更新履歴</h2>
+    <ul>
+        <li>v0.3.0 バグ修正、pow関数のb引数のマイナスの対応。</li>
+    </ul>
+
+</body>
+
+</html>
