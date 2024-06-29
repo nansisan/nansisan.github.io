@@ -32,6 +32,18 @@ a {
 	width: 1024px;
 	background: #222222;
 }
+.menu {
+    margin: auto;
+	width: 1024px;
+	background: #222222;
+	text-align: center;
+}
+.underline {
+	text-decoration: underline;
+}
+.subtitle {
+	border-bottom: 1px solid #fff;
+}
 .hr-red {
     border: 1px solid var(--red);
 }
