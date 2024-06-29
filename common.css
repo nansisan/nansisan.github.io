@@ -27,6 +27,12 @@ hr {
 a {
     color: var(--yel);
 }
+footer {
+	background: #282828;
+	position: absolute;
+    bottom: 0;
+	text-align: center;
+}
 .content {
 	margin: auto;
     max-width: 1024px;
