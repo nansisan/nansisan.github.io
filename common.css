@@ -10,6 +10,7 @@
 }
 
 body {
+    display: flex;
     font-family: sans-serif;
     background: #1f1f1f;
     color: #fff;
@@ -43,6 +44,7 @@ footer {
 }
 
 .content {
+    flex: 1;
     margin: auto auto 48px auto;
     max-width: 1024px;
     width: 100%;
