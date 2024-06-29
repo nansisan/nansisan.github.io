@@ -25,17 +25,7 @@ hr {
     border: 0;
 }
 a {
-    color: #add8e6;
-}
-.menu {
-    text-align: center;
-    background: #282828;
-}
-.underline {
-	border-bottom: 1px solid #fff;
-}
-.content {
-	background: #282828;
+    color: var(--yel);
 }
 .hr-red {
     border: 1px solid var(--red);
