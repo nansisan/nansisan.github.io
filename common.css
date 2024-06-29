@@ -27,6 +27,11 @@ hr {
 a {
     color: var(--yel);
 }
+.content {
+	margin: auto;
+	width: 1024px;
+	background: #222222;
+}
 .hr-red {
     border: 1px solid var(--red);
 }
