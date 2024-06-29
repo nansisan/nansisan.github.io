@@ -29,12 +29,14 @@ a {
 }
 .content {
 	margin: auto;
-	width: 1024px;
+    max-width: 1024px;
+    width: 100%;
 	background: #222222;
 }
 .menu {
     margin: auto;
-	width: 1024px;
+    max-width: 1024px;
+    width: 100%;
 	background: #222222;
 	text-align: center;
 }
@@ -44,6 +46,7 @@ a {
 .subtitle {
 	border-bottom: 1px solid #fff;
 }
+
 .hr-red {
     border: 1px solid var(--red);
 }
