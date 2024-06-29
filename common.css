@@ -29,7 +29,10 @@ a {
 }
 .menu {
     text-align: center;
-	background: #282828;
+    background: #282828;
+}
+.underline {
+	border-bottom: 1px solid #fff;
 }
 .hr-red {
     border: 1px solid var(--red);
