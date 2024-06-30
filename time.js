@@ -4,9 +4,9 @@ function updateTime() {
     const minutes = String(now.getMinutes()).padStart(2, '0');
     const seconds = String(now.getSeconds()).padStart(2, '0');
 
-    const timeString = `${hours}:${minutes}:${seconds}`;
+    const timeString = "いまは" + hours + ":" + minutes + ":" + seconds + "です。";
 
-    document.querySelector('.date').textContent = "いまは" + timeString + "です。";
+    document.querySelector('.time').textContent = timeString;
 }
 
 // 1秒ごとに時間を更新
