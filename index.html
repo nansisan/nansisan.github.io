@@ -25,25 +25,7 @@
     <meta name="google-site-verification" content="5XORelxYJaYbkGmY1dImXKrt2FhQpfa0ic4bpUxP4RY" />
     <meta name="google-site-verification" content="FrhmvEcmrb-mlP4tt6iNR9XapnzMl72D0B7MdzBmo_o" />
     <link rel="stylesheet" href="common.css" type="text/css" />
-    <script src="common.js"></script>
-    <script>
-        function updateTime() {
-            const now = new Date();
-            const hours = String(now.getHours()).padStart(2, '0');
-            const minutes = String(now.getMinutes()).padStart(2, '0');
-            const seconds = String(now.getSeconds()).padStart(2, '0');
-
-            const timeString = `${hours}:${minutes}:${seconds}`;
-
-            document.querySelector('.date').textContent = "いまは" + timeString + "です。";
-        }
-
-        // 1秒ごとに時間を更新
-        setInterval(updateTime, 1000);
-
-        // ページ読み込み時に即座に時間を表示
-        updateTime();
-    </script>
+    <script src="common.js" defer></script>
     <title>なんしさんのページ</title>
 </head>
 
@@ -130,6 +112,24 @@
     <footer>
         <p>(c)nansisan 2024-</p>
     </footer>
+    <script>
+        function updateTime() {
+            const now = new Date();
+            const hours = String(now.getHours()).padStart(2, '0');
+            const minutes = String(now.getMinutes()).padStart(2, '0');
+            const seconds = String(now.getSeconds()).padStart(2, '0');
+
+            const timeString = `${hours}:${minutes}:${seconds}`;
+
+            document.querySelector('.date').textContent = "いまは" + timeString + "です。";
+        }
+
+        // 1秒ごとに時間を更新
+        setInterval(updateTime, 1000);
+
+        // ページ読み込み時に即座に時間を表示
+        updateTime();
+    </script>
 </body>
 
 </html>
