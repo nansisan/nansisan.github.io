@@ -47,11 +47,13 @@ footer {
     background: #222222;
     padding: 4px;
 }
-
+footer {
+    padding: 24px;
+}
 .menu {
     margin: auto;
     max-width: 1024px;
-    width: 100%;
+    width: 80%;
     background: #222222;
     text-align: center;
     padding: 4px;
