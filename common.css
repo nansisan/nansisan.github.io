@@ -38,6 +38,7 @@ footer {
     background: #282828;
     text-align: center;
     width: 100%;
+    padding: 16px 0px;
 }
 
 .content {
@@ -46,9 +47,6 @@ footer {
     width: 100%;
     background: #222222;
     padding: 4px;
-}
-footer {
-    padding: 24px;
 }
 .menu {
     margin: auto;
