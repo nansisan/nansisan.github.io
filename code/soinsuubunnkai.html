@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>素因数分解</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin-top: 50px;
+        }
+        input[type="number"] {
+            padding: 10px;
+            font-size: 1em;
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 1em;
+            color: white;
+            background-color: #007bff;
+            border: none;
+            cursor: pointer;
+        }
+        .result {
+            margin-top: 20px;
+            font-size: 1.2em;
+        }
+    </style>
+</head>
+<body>
+    <h1>素因数分解</h1>
+    <input type="number" id="number" placeholder="数値を入力">
+    <button onclick="factorize()">素因数分解</button>
+    <div class="result" id="result"></div>
+
+    <script>
+        function factorize() {
+            const number = parseInt(document.getElementById('number').value);
+            if (isNaN(number) || number <= 1) {
+                document.getElementById('result').innerHTML = '正の整数を入力してください。';
+                return;
+            }
+            let n = number;
+            const factors = {};
+            for (let i = 2; i <= Math.sqrt(n); i++) {
+                while (n % i === 0) {
+                    factors[i] = (factors[i] || 0) + 1;
+                    n /= i;
+                }
+            }
+            if (n > 1) {
+                factors[n] = (factors[n] || 0) + 1;
+            }
+            const result = Object.entries(factors).map(([base, exp]) => {
+                return exp > 1 ? `<msup><mi>${base}</mi><mn>${exp}</mn></msup>` : `<mi>${base}</mi>`;
+            }).join('<mo>&#xD7;</mo>');
+            document.getElementById('result').innerHTML = `<math xmlns="http://www.w3.org/1998/Math/MathML"><mn>${number}</mn><mo>=</mo>${result}</math>`;
+        }
+    </script>
+</body>
+</html>
