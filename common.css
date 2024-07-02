@@ -91,6 +91,7 @@ footer {
 /*ここまで*/
 .underline {
     text-decoration: underline;
+    padding: 0.1em;
 }
 
 .subtitle {
