@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <title>Binary Addition Neural Network</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        .container {
+            max-width: 600px;
+            margin: auto;
+        }
+        .input-group {
+            margin-bottom: 10px;
+        }
+        button {
+            padding: 10px 15px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+        }
+        button:disabled {
+            background-color: #ccc;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Binary Addition Neural Network</h1>
+        <div class="input-group">
+            <label for="inputA">A:</label>
+            <input type="number" id="inputA" min="0" max="255">
+        </div>
+        <div class="input-group">
+            <label for="inputB">B:</label>
+            <input type="number" id="inputB" min="0" max="255">
+        </div>
+        <div class="input-group">
+            <button id="trainButton" onclick="trainModel()">学習開始</button>
+        </div>
+        <div class="input-group">
+            <button id="predictButton" onclick="predict()" disabled>予測</button>
+        </div>
+        <div class="input-group">
+            <label for="output">結果:</label>
+            <input type="text" id="output" readonly>
+        </div>
+        <pre id="console"></pre>
+    </div>
+
+    <script>
+        let model;
+        let isTrained = false;
+
+        function generateData() {
+            const X = [];
+            const y = [];
+            for (let i = 0; i < 256; i++) {
+                for (let j = 0; j < 256; j++) {
+                    const bin_i = i.toString(2).padStart(8, '0');
+                    const bin_j = j.toString(2).padStart(8, '0');
+                    const sum_bin = (i + j).toString(2).padStart(9, '0');
+                    X.push([...bin_i, ...bin_j].map(bit => parseInt(bit, 10)));
+                    y.push([...sum_bin].map(bit => parseInt(bit, 10)));
+                }
+            }
+            return [tf.tensor2d(X), tf.tensor2d(y)];
+        }
+
+        async function trainModel() {
+            document.getElementById('trainButton').disabled = true;
+            document.getElementById('console').textContent = "学習中...\n";
+
+            const [X, y] = generateData();
+
+            model = tf.sequential();
+            model.add(tf.layers.dense({ units: 256, activation: 'relu', inputShape: [16] }));
+            model.add(tf.layers.dense({ units: 256, activation: 'relu' }));
+            model.add(tf.layers.dense({ units: 256, activation: 'relu' }));
+            model.add(tf.layers.dense({ units: 9, activation: 'sigmoid' }));
+
+            model.compile({ optimizer: 'adam', loss: 'binaryCrossentropy', metrics: ['accuracy'] });
+
+            let epochCount = 0;
+            const maxEpochs = 100;
+
+            while (epochCount < maxEpochs) {
+                const response = await model.fit(X, y, {
+                    epochs: 1,
+                    batchSize: 32,
+                    callbacks: {
+                        onEpochEnd: (epoch, logs) => {
+                            epochCount++;
+                            const logText = `Epoch ${epochCount} - Loss: ${logs.loss.toFixed(4)} - Accuracy: ${(logs.acc * 100).toFixed(2)}%\n`;
+                            console.log(`Epoch ${epochCount} - Loss: ${logs.loss.toFixed(15)} - Accuracy: ${(logs.acc * 100).toFixed(13)}`)
+                            document.getElementById('console').textContent += logText;
+                            if (logs.acc === 1 || epochCount >= maxEpochs) {
+                                document.getElementById('console').textContent += "学習完了!\n";
+                                document.getElementById('predictButton').disabled = false;
+                                isTrained = true;
+                            }
+                        }
+                    }
+                });
+                if (isTrained) break; // 精度が1になった場合、ループを抜ける
+            }
+        }
+
+        function predict() {
+            if (!isTrained) return;
+
+            const a = parseInt(document.getElementById('inputA').value);
+            const b = parseInt(document.getElementById('inputB').value);
+
+            if (isNaN(a) || isNaN(b) || a < 0 || a > 255 || b < 0 || b > 255) {
+                alert("AとBには0から255までの整数を入力してください。");
+                return;
+            }
+
+            const bin_a = a.toString(2).padStart(8, '0');
+            const bin_b = b.toString(2).padStart(8, '0');
+            const input_data = tf.tensor2d([[...bin_a, ...bin_b].map(bit => parseInt(bit, 10))]);
+            const result = model.predict(input_data);
+            const resultArray = Array.from(result.dataSync()).map(bit => Math.round(bit));
+            const resultStr = resultArray.join('');
+
+            document.getElementById('output').value = parseInt(resultStr, 2);
+        }
+    </script>
+</body>
+</html>
