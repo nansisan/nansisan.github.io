@@ -1,0 +1,164 @@
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>連立方程式の問題</title>
+    <style>
+        body {
+            font-family: serif;
+            text-align: center;
+            margin-top: 50px;
+        }
+        input[type="number"] {
+            padding: 10px;
+            font-size: 1em;
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 1em;
+            color: white;
+            background-color: #007bff;
+            border: none;
+            cursor: pointer;
+        }
+        .result {
+            margin-top: 20px;
+            font-size: 1.2em;
+        }
+    </style>
+</head>
+<body>
+    <h1>連立方程式の問題</h1>
+    <p id="equation"></p>
+    <label for="x">x:</label><input type="text" id="x"><br>
+    <label for="y">y:</label><input type="text" id="y"><br>
+    <button onclick="checkAnswer()">答え合わせ</button>
+    <p id="result"></p>
+    <p>連続正答数: <span id="correctCount">0</span></p>
+    <p>正答率: <span id="correctRate">0</span>%</p>
+    <script>
+        let xMin = -10;
+        let xMax = 10;
+        let yMin = -10;
+        let yMax = 10;
+        let aMin = 1;
+        let aMax = 10;
+        let bMin = 1;
+        let bMax = 10;
+        let cMin = 1;
+        let cMax = 10;
+        let dMin = 1;
+        let dMax = 10;
+
+        let correctCount = 0;
+        let totalCount = 0;
+
+        function getRandomInt(min, max) {
+            return Math.floor(Math.random() * (max - min + 1)) + min;
+        }
+
+        function generateEquation() {
+            let equationType = getRandomInt(1, 4);
+            let x = getRandomInt(xMin, xMax);
+            let y = getRandomInt(yMin, yMax);
+            let a = getRandomInt(aMin, aMax);
+            let b = getRandomInt(bMin, bMax);
+            let c = getRandomInt(cMin, cMax);
+            let d = getRandomInt(dMin, dMax);
+            let sign1 = Math.random() < 0.5 ? -1 : 1;
+            let sign2 = Math.random() < 0.5 ? -1 : 1;
+            if (equationType == 1) {
+                // ax[+ or -]by=e
+                // cx[+ or -]dy=f
+                let e = a * x + sign1 * b * y;
+                let f = c * x + sign2 * d * y;
+                document.getElementById("equation").innerHTML =
+                    `${a}x ${sign1 == -1 ? "-" : "+"} ${b}y = ${e}<br>${c}x ${sign2 == -1 ? "-" : "+"} ${d}y = ${f}`;
+                return [x, y];
+            } else if (equationType == 2) {
+                // ax[+ or -]by[+ or -]c=g
+                // dx[+ or -]ey[+ or -]f=h
+                let eMin = 1;
+                let eMax = 10;
+                let fMin = 1;
+                let fMax = 10;
+                let e = getRandomInt(eMin, eMax);
+                let f = getRandomInt(fMin, fMax);
+                let sign3 = Math.random() < 0.5 ? -1 : 1;
+                let sign4 = Math.random() < 0.5 ? -1 : 1;
+                let g =
+                    a * x + sign1 * b * y + (sign3 == -1 ? -e : e);
+                let h =
+                    c * x + sign2 * d * y + (sign4 == -1 ? -f : f);
+                document.getElementById("equation").innerHTML =
+                    `${a}x ${sign1 == -1 ? "-" : "+"} ${b}y ${sign3 == -1 ? "-" : "+"} ${e} = ${g}<br>${c}x ${sign2 == -1 ? "-" : "+"} ${d}y ${sign4 == -1 ? "-" : "+"} ${f} = ${h}`;
+                return [x, y];
+            } else if (equationType == 3) {
+                // a(bx[+ or -]c)[+ or -]+dy=i
+                // ex[+ or -]f(gy[+ or -]h)=j
+                let eMin = 1;
+                let eMax = 10;
+                let fMin = 1;
+                let fMax = 10;
+                let gMin = 1;
+                let gMax = 10;
+                let hMin = 1;
+                let hMax = 10;
+                let e = getRandomInt(eMin, eMax);
+                let f = getRandomInt(fMin, fMax);
+                let g = getRandomInt(gMin, gMax);
+                let h = getRandomInt(hMin, hMax);
+                let sign3 = Math.random() < 0.5 ? -1 : 1;
+                let sign4 = Math.random() < 0.5 ? -1 : 1;
+                let i =
+                    a * (b * x + (sign3 == -1 ? -c : c)) +
+                    sign2 * d * y;
+                let j =
+                    e * x +
+                    sign4 * f * (g * y + (sign4 == -1 ? -h : h));
+                document.getElementById("equation").innerHTML =
+                    `${a}(${b}x ${sign3 == -1 ? "-" : "+"} ${c}) ${sign2 == -1 ? "-" : "+"} ${d}y = ${i}<br>${e}x ${sign4 == -1 ? "-" : "+"} ${f}(${g}y ${sign4 == -1 ? "-" : "+"} ${h}) = ${j}`;
+                return [x, y];
+            } else if (equationType == 4) {
+                // a(x+y)[+ or -]by=e
+                // c(x-y)[+ or -]dx=f
+                let e =
+                    a * (x + y) + (sign1 == -1 ? -b * y : b * y);
+                let f =
+                    c * (x - y) + (sign2 == -1 ? -d * y : d * y);
+                document.getElementById("equation").innerHTML =
+                    `${a}(x+y) ${sign1 == -1 ? "-" : "+"} ${b}y = ${e}<br>${c}(x-y) ${sign2 == -1 ? "-" : "+"} ${d}y = ${f}`;
+                return [x, y];
+            }
+        }
+
+        function checkAnswer() {
+            totalCount++;
+            let answerX = document.getElementById("x").value;
+            let answerY = document.getElementById("y").value;
+            if (answerX == solution[0] && answerY == solution[1]) {
+                document.getElementById("result").innerHTML = "正解です！";
+                correctCount++;
+                if (correctCount % 5 == 0) {
+                    xMin -= 5;
+                    xMax += 5;
+                    yMin -= 5;
+                    yMax += 5;
+                }
+                solution = generateEquation();
+            } else {
+                document.getElementById("result").innerHTML = "不正解です。";
+                correctCount = 0;
+                xMin = -10;
+                xMax = 10;
+                yMin = -10;
+                yMax = 10;
+            }
+            document.getElementById("correctCount").innerHTML = correctCount;
+            document.getElementById("correctRate").innerHTML =
+                Math.round((correctCount / totalCount) * 100);
+        }
+
+        let solution = generateEquation();
+    </script>
+</body>
+</html>
