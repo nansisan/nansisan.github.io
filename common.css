@@ -91,11 +91,12 @@ footer {
 /*ここまで*/
 .underline {
     text-decoration: underline;
-    padding: 4px 0;
+    padding: 0.1em;
 }
 
 .subtitle {
     border-bottom: 1px solid #fff;
+    padding: 0 4px;
 }
 
 .hr-red {
