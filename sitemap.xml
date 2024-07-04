@@ -9,18 +9,43 @@
 
 <url>
   <loc>https://nansisan.github.io/</loc>
-  <lastmod>2024-06-30T13:17:35+00:00</lastmod>
+  <lastmod>2024-07-04T12:47:06+00:00</lastmod>
   <priority>1.00</priority>
 </url>
 <url>
   <loc>https://nansisan.github.io/blog/</loc>
-  <lastmod>2024-06-30T13:17:35+00:00</lastmod>
+  <lastmod>2024-07-04T12:47:06+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://nansisan.github.io/code/APFAL.html</loc>
+  <lastmod>2024-07-04T12:47:06+00:00</lastmod>
   <priority>0.80</priority>
 </url>
 <url>
   <loc>https://nansisan.github.io/code/</loc>
-  <lastmod>2024-06-30T13:17:35+00:00</lastmod>
+  <lastmod>2024-07-04T12:47:06+00:00</lastmod>
   <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://nansisan.github.io/blog/2024-7/</loc>
+  <lastmod>2024-07-04T12:47:06+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://nansisan.github.io/code/kasan.html</loc>
+  <lastmod>2024-07-04T12:47:06+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://nansisan.github.io/code/factorize.html</loc>
+  <lastmod>2024-07-04T12:47:06+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://nansisan.github.io/code/renritsu.html</loc>
+  <lastmod>2024-07-04T12:47:06+00:00</lastmod>
+  <priority>0.64</priority>
 </url>
 
 
