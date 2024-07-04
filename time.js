@@ -4,7 +4,11 @@ function updateTime() {
     const minutes = String(now.getMinutes()).padStart(2, '0');
     const seconds = String(now.getSeconds()).padStart(2, '0');
 
-    const timeString = "いまは" + hours + ":" + minutes + ":" + seconds + "です。";
+    if(hours >= 6 && hours < 11) message = "おはようございます。";
+    else if (hours >= 11 && hours < 18) message ="こんにちは。"
+    else message = "こんばんは。"
+
+    const timeString = message + "いまは" + hours + ":" + minutes + ":" + seconds + "です。";
 
     document.querySelector('.time').textContent = timeString;
 }
