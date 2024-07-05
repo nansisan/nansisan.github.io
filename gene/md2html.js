@@ -85,5 +85,5 @@ function convertMdToHtml(markdown) {
     html += '</ul>\n';
   }
 
-  return escapeHtml(html);
+  return html;
 }
