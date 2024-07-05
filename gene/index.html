@@ -8,26 +8,48 @@
         body {
             font-family: Arial, sans-serif;
             margin: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
         textarea {
-            width: 100%;
+            width: 45%;
             height: 200px;
+            margin: 10px;
         }
-        #output {
+        #preview, #output {
+            width: 45%;
+            height: 200px;
             border: 1px solid #ccc;
             padding: 10px;
-            margin-top: 20px;
+            margin: 10px;
+            overflow: auto;
+            white-space: pre-wrap;
+            background-color: #f9f9f9;
+        }
+        .container {
+            display: flex;
+            width: 100%;
+            justify-content: space-between;
         }
     </style>
 </head>
 <body>
     <h1>Markdown to HTML Converter</h1>
-    <textarea id="markdown-input" placeholder="ここにMarkdownを入力してください"></textarea>
+    <div class="container">
+        <textarea id="markdown-input" placeholder="ここにMarkdownを入力してください" oninput="updatePreview()"></textarea>
+        <div id="preview" placeholder="リアルタイムプレビュー"></div>
+    </div>
     <button onclick="convert()">Convert</button>
-    <div id="output"></div>
+    <div id="output" placeholder="HTMLプレビュー"></div>
 
     <script src="md2html.js"></script>
     <script>
+        function updatePreview() {
+            const markdown = document.getElementById('markdown-input').value;
+            document.getElementById('preview').textContent = markdown;
+        }
+
         function convert() {
             const markdown = document.getElementById('markdown-input').value;
             const html = convertMdToHtml(markdown);
