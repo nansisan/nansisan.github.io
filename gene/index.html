@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Markdown to HTML Converter</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        textarea {
+            width: 100%;
+            height: 200px;
+        }
+        #output {
+            border: 1px solid #ccc;
+            padding: 10px;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Markdown to HTML Converter</h1>
+    <textarea id="markdown-input" placeholder="ここにMarkdownを入力してください"></textarea>
+    <button onclick="convert()">Convert</button>
+    <div id="output"></div>
+
+    <script src="md2html.js"></script>
+    <script>
+        function convert() {
+            const markdown = document.getElementById('markdown-input').value;
+            const html = convertMdToHtml(markdown);
+            document.getElementById('output').innerHTML = html;
+        }
+    </script>
+</body>
+</html>
