@@ -1,3 +1,14 @@
+function escapeHtml(text) {
+  const map = {
+    '&': '&amp;',
+    '<': '&lt;',
+    '>': '&gt;',
+    '"': '&quot;',
+    "'": '&#039;'
+  };
+  return text.replace(/[&<>"']/g, function(m) { return map[m]; });
+}
+
 function convertMdToHtml(markdown) {
   let html = '';
   let inParagraph = false;
@@ -5,6 +16,7 @@ function convertMdToHtml(markdown) {
 
   markdown.split('\n').forEach(line => {
     line = line.trim();
+    line = escapeHtml(line); // ここで特殊文字をエスケープ
 
     // ヘッダーの変換 (h1~h6)
     if (/^#{1,6}\s+.+$/.test(line)) {
@@ -73,5 +85,5 @@ function convertMdToHtml(markdown) {
     html += '</ul>\n';
   }
 
-  return html;
+  return escapeHtml(html);
 }
