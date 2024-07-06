@@ -2,7 +2,4 @@ User-agent: *
 
 Allow: /
 
-Disallow: /*.css
-Disallow: /*.js
-
 Sitemap: https://nansisan.github.io/sitemap.xml
