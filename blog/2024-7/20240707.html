@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+
+    <head prefix="og: https://ogp.me/ns#">
+        <link rel="stylesheet" href="https://nansisan.github.io/common.css" type="text/css" /><!--適宜修正-->
+        <script src="https://nansisan.github.io/common.js" defer></script><!--適宜修正-->
+        <title>なんしさんのページ</title><!--適宜修正-->
+        <meta name="description" content="なんしさんが色々します。">
+        <meta name="keywords" content="なんし, ブログ, 技術, 趣味">
+        <meta property="og:title" content="なんしさんのページ">
+        <meta property="og:site_name" content="なんしさんのページ">
+        <meta property="og:description" content="なんしさんが色々します。">
+        <meta property="og:type" content="website">
+        <meta property="og:url" content="https://nansisan.github.io/">
+        <meta property="og:image" content="https://nansisan.github.io/og.jpg">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/default.min.css" defer>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js" defer></script>
+
+        <!-- and it's easy to individually load additional languages -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/go.min.js" defer></script>
+
+        <script>
+            hljs.highlightAll();
+        </script>
+    </head>
+
+<body>
+    <header>
+        <div>
+            <h1 class="title">nansisan-page</h1>
+            <hr class="hr-whi">
+        </div>
+    </header>
+    <div class="content">
+        <h1 class="subtitle">7/7 ifやforなどにカッコがいらなかった件</h1>
+        <p>七夕ですね。この記事はGPT-4oによって生成されています。AIの記事も校閲はしてます。修正もします。</p>
+        <p>最近、mdn読んでてて気づいたんですよ。それは、<strong>if</strong>や<strong>for</strong>などの制御構文で、一行だけのものに関してはカッコなしでも文法的に正しいということです。</p>
+        <p>例えば、JavaScriptで以下のようなコードを書いたことがある人は多いでしょう。</p>
+        <pre><code class="language-javascript">if (condition) {
+    doSomething();
+}</code></pre>
+        <p>このように、一般的には条件式の後にカッコを使うのが普通です。しかし、実はカッコ内が一行であるならば例えば、以下のように書いても同じ結果が得られます。</p>
+        <pre><code class="language-javascript">if (condition) doSomething();</code></pre>
+        <p>このように、一行だけの処理に関しては、カッコを省略しても問題ないんです。</p>
+        <p>カッコを使わないことで、コードがより簡潔に見えることがあります。ただし、複数行の処理を行う場合や、コードの可読性を重視する場合には、やはりカッコを使った方が良いでしょう。</p>
+        <p>カッコを省略するかどうかは、状況に応じて使い分けると良いですね。</p>
+        >
+    </div>
+    <footer>
+        <p>(c)nansisan 2024-</p>
+        <br>
+        <a href="https://nansisan.github.io/">HOME</a>
+    </footer>
+
+</body>
+
+</html>
