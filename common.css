@@ -42,20 +42,16 @@ footer {
     padding: 16px 0px;
 }
 
-.content {
+.content, .menu {
     margin: auto;
-    max-width: 1024px;
+    max-width: 768px;
     width: 80%;
     background: #222222;
     padding: 4px;
 }
+
 .menu {
-    margin: auto;
-    max-width: 1024px;
-    width: 80%;
-    background: #222222;
     text-align: center;
-    padding: 4px;
 }
 /*自動生成のcss*/
 .table-main{
