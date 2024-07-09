@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+
+    <head prefix="og: https://ogp.me/ns#">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="https://nansisan.github.io/common.css" type="text/css" /><!--適宜修正-->
+        <script src="https://nansisan.github.io/common.js" defer></script><!--適宜修正-->
+        <title>なんしさんのページ</title><!--適宜修正-->
+        <meta name="description" content="なんしさんが色々します。">
+        <meta name="keywords" content="なんし, ブログ, 技術, 趣味">
+        <meta property="og:title" content="なんしさんのページ">
+        <meta property="og:site_name" content="なんしさんのページ">
+        <meta property="og:description" content="なんしさんが色々します。">
+        <meta property="og:type" content="website">
+        <meta property="og:url" content="https://nansisan.github.io/">
+        <meta property="og:image" content="https://nansisan.github.io/og.jpg">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/monokai-sublime.min.css">
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+
+        <!-- and it's easy to individually load additional languages -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/javascript.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/css.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/xml.min.js"></script>
+
+        <script>
+            hljs.highlightAll();
+        </script>
+    </head>
+
+<body>
+    <header>
+        <div>
+            <h1 class="title">nansisan-page</h1>
+            <hr class="hr-whi">
+        </div>
+    </header>
+    <div class="content">
+        <h1 class="subtitle" id="7/9 素数列挙を極めたらn4020でも爆速になった件">素数列挙を極めたらN4020でも爆速になった件</h1>
+        <p>こんにちは。この記事は人間が書いています。筆者は文章を書くのがかなり苦手なのでAIよりも品質が悪いかも？一応AIの添削も参考にしています。</p>
+        <h2 id="目次">目次</h2>
+        <ul>
+            <li>環境</li>
+            <li>ソースコード</li>
+            <li>工夫した点</li>
+            <li>工夫した結果</li>
+            <li>考察と今後の改善点</li>
+        </ul>
+        <h2 id="環境">環境</h2>
+        <ul>
+            <li>CPU: Celeron N4020 (最大2.8GHz)</li>
+            <li>メモリ: 4GB</li>
+            <li>OS: ChromeOS</li>
+        </ul>
+        <h2 id="ソースコード">ソースコード</h2>
+        <pre><code class="language-javascript">
+function SieveOfAtkin(limit) {
+    console.time(&quot;Total time&quot;);
+
+    console.time(&quot;Array generation time&quot;);
+    let sieve = new Uint8Array(Math.ceil((limit + 1) / 8));
+    if(limit &lt;= 2**31-1){
+        var primes = new Int32Array(Math.ceil(1.25506 * limit / Math.log(limit))).fill(0);
+        console.log(&quot;memory size: &quot; + Math.floor((sieve.length + primes.length * 4) / 1024) + &quot; KB.&quot;);
+    } else {
+        throw new Error(&quot;The upper limit must be less than 2**31-1.&quot;);
+    }
+    console.timeEnd(&quot;Array generation time&quot;);
+
+    console.log(&quot;Calculation start.&quot;);
+
+    primes[0] = 2;
+    primes[1] = 3;
+    let index = 2;
+
+    console.time(&quot;Calculation time&quot;);
+    const limitSqrt = Math.sqrt(limit);
+
+    for (let x = 1; x &lt;= limitSqrt; x++) {
+        const xSqr = x * x;
+        for (let y = 1; y &lt;= limitSqrt; y++) {
+            const ySqr = y * y;
+
+            let n = 4 * xSqr + ySqr;
+            if (n &lt;= limit &amp;&amp; (n % 12 == 1 || n % 12 == 5)) {
+                sieve[n &gt;&gt; 3] ^= 1 &lt;&lt; (7 &amp; n);
+            }
+
+            n = 3 * xSqr + ySqr;
+            if (n &lt;= limit &amp;&amp; n % 12 == 7) {
+                sieve[n &gt;&gt; 3] ^= 1 &lt;&lt; (7 &amp; n);
+            }
+
+            if (x &gt; y) {
+                n = 3 * xSqr - ySqr;
+                if (n &lt;= limit &amp;&amp; n % 12 == 11) {
+                    sieve[n &gt;&gt; 3] ^= 1 &lt;&lt; (7 &amp; n);
+                }
+            }
+        }
+    }
+    console.timeEnd(&quot;Calculation time&quot;);
+
+    console.time(&quot;Prime number array generation time&quot;);
+    for (let n = 5; n &lt;= limitSqrt; n++) {
+        if (sieve[n &gt;&gt; 3] &amp; (1 &lt;&lt; (7 &amp; n))) {
+            const nSqr = n * n;
+            for (let k = nSqr; k &lt; limit; k += nSqr) {
+                sieve[k &gt;&gt; 3] &amp;= ~(1 &lt;&lt; (7 &amp; k));
+            }
+        }
+    }
+    for (let n = 5; n &lt; limit; n += 2) {
+        if (sieve[n &gt;&gt; 3] &amp; (1 &lt;&lt; (7 &amp; n))) {
+            primes[index++] = n;
+        }
+    }
+    console.timeEnd(&quot;Prime number array generation time&quot;);
+
+    console.timeEnd(&quot;Total time&quot;);
+
+    primes[index] = null;
+
+    return primes.subarray(0, index);
+}
+</code></pre>
+        <h2 id="工夫した点">工夫した点</h2>
+        <ul>
+            <li>sieveをUint8Arrayで実装し、省メモリ化と高速化を実現</li>
+            <li>primesをInt32Arrayで実装し、省メモリ化と高速化を実現</li>
+            <li>エラトステネスのふるいではなく、アトキンのふるいを採用し、計算効率を向上</li>
+        </ul>
+        <h2 id="工夫した結果">工夫した結果</h2>
+        <p>ログ:</p>
+        <pre><code>
+SieveOfAtkin(1e8)
+VM46:8 memory size: 38821 KB.
+VM46:12 Array generation time: 34.12109375 ms
+VM46:14 Calculation start.
+VM46:46 Calculation time: 3155.447021484375 ms
+VM46:62 Prime number array generation time: 291.570068359375 ms
+VM46:64 Total time: 3481.7177734375 ms</code></pre>
+        <p>結果として、1億までの素数を約3.4秒で計算できました。これは、使用しているハードウェアの制約を考慮すると、非常に優れたパフォーマンスと言えます。</p>
+        <h2 id="考察と今後の改善点">考察と今後の改善点</h2>
+        <ol>
+            <li>並列処理: WebWorkersを使用して計算を並列化することで、さらなる高速化が期待できます。</li>
+            <li>メモリ使用量の最適化: 現在のメモリ使用量は約38MBですが、さらなる最適化の余地があるかも。</li>
+            <li>キャッシュ効率: CPUキャッシュの効率的な利用を考慮したアルゴリズムの改良を検討できます。</li>
+            <li>大きな数への対応: 現在は2^31-1までの制限がありますが、BigIntを使用することで、より大きな数にも対応できる可能性があります。</li>
+        </ol>
+    </div>
+    <footer>
+        <p>(c)nansisan 2024-</p>
+        <br>
+        <a href="https://nansisan.github.io/">HOME</a>
+    </footer>
+
+</body>
+
+</html>
