@@ -26,3 +26,19 @@ function guess(number) {
 // 遊び方の例:
 // 例えば、数を推測するにはコンソールで次のように入力する:
 // guess(50);
+document.addEventListener('DOMContentLoaded', () => {
+    const codeElements = document.querySelectorAll('code');
+
+    codeElements.forEach(element => {
+        element.addEventListener('click', () => {
+            const text = element.textContent;
+            navigator.clipboard.writeText(text).then(() => {
+                // コピー成功時の処理
+                alert('コードがクリップボードにコピーされました: ' + text);
+            }).catch(err => {
+                // コピー失敗時の処理
+                console.error('コピーに失敗しました:', err);
+            });
+        });
+    });
+});
