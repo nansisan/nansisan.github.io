@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>JSエディタ</title>
+    <style>
+        body {
+            margin: 0;
+            height: 100%;
+            display: flex;
+        }
+
+        #editor {
+            width: 100%;
+            height: 100vh;
+        }
+    </style>
+</head>
+
+<body>
+    <textarea id="editor"></textarea>
+
+    <script>
+        const editor = document.getElementById("editor");
+        editor.addEventListener("keydown", a => {
+            const d = {
+                    "(": ")",
+                    "[": "]",
+                    "{": "}",
+                    "<": ">",
+                    '"': '"',
+                    "'": "'"
+                },
+                b = editor.selectionStart,
+                c = a.key,
+                e = editor.value.charAt(b - 1);
+            if ("([{<\"'".split("").includes(c)) {
+                a.preventDefault();
+                const f = d[c];
+                editor.value = editor.value.substring(0, b) + c + f + editor.value.substring(b);
+                editor.selectionStart = b + 1;
+                editor.selectionEnd = b + 1
+            }
+            ")]}>\"'".split("").includes(c) && d[e] === c && (a.preventDefault(), editor.selectionStart = b + 1, editor.selectionEnd = b + 1)
+        });
+        editor.addEventListener("keydown", a => {
+            if ("Enter" === a.key) {
+                a.preventDefault();
+                a = editor.selectionStart;
+                const d = editor.value.substring(0, a).split("\n").length - 1,
+                    b = editor.value.split("\n"),
+                    c = -1 === b[d].search(/\S/) ? 0 : b[d].search(/\S/);
+                let e = " ".repeat(c);
+                b[d].trim().endsWith("{") ? e += "    " : 0 < c && "}" === b[d].trim() && (e = " ".repeat(c - 4));
+                editor.value = editor.value.substring(0, a) + "\n" + e + editor.value.substring(a);
+                editor.selectionStart = a + e.length;
+                editor.selectionEnd = a + e.length
+            }
+        });
+    </script>
+</body>
+
+</html>
