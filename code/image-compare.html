@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Comparison</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin-top: 50px;
+        }
+        .container {
+            margin-top: 20px;
+        }
+        .result {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Image Comparison: PSNR, SSIM, SNR</h1>
+    <div class="container">
+        <input type="file" id="imageA" accept="image/*">
+        <input type="file" id="imageB" accept="image/*">
+        <button onclick="compareImages()">Compare</button>
+    </div>
+    <div class="result" id="result"></div>
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs"></script>
+    <script src="https://cdn.jsdelivr.net/npm/image-js"></script>
+    <script>
+        async function loadImage(file) {
+            return new Promise((resolve, reject) => {
+                const reader = new FileReader();
+                reader.onload = () => {
+                    const img = new Image();
+                    img.onload = () => resolve(img);
+                    img.src = reader.result;
+                };
+                reader.onerror = reject;
+                reader.readAsDataURL(file);
+            });
+        }
+
+        async function compareImages() {
+            const fileA = document.getElementById('imageA').files[0];
+            const fileB = document.getElementById('imageB').files[0];
+            
+            if (!fileA || !fileB) {
+                alert('Please select both images.');
+                return;
+            }
+
+            const imgA = await loadImage(fileA);
+            const imgB = await loadImage(fileB);
+
+            const imageA = tf.browser.fromPixels(imgA).mean(2).toFloat();
+            const imageB = tf.browser.fromPixels(imgB).mean(2).toFloat();
+
+            const mse = tf.losses.meanSquaredError(imageA, imageB).arraySync();
+            const psnr = 10 * Math.log10(255 * 255 / mse);
+
+            const ssim = tf.image.ssim(imageA.expandDims(-1), imageB.expandDims(-1)).arraySync();
+
+            const snr = 10 * Math.log10(tf.norm(imageA).arraySync() ** 2 / mse);
+
+            document.getElementById('result').innerHTML = `
+                <p>PSNR: ${psnr.toFixed(2)} dB</p>
+                <p>SSIM: ${ssim.toFixed(4)}</p>
+                <p>SNR: ${snr.toFixed(2)} dB</p>
+            `;
+        }
+    </script>
+</body>
+</html>
