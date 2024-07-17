@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Image Comparison</title>
+    <title>Image Comparison: PSNR, SSIM, SNR</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -26,8 +26,7 @@
         <button onclick="compareImages()">Compare</button>
     </div>
     <div class="result" id="result"></div>
-    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs"></script>
-    <script src="https://cdn.jsdelivr.net/npm/image-js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@3.9.0/dist/tf.min.js"></script>
     <script>
         async function loadImage(file) {
             return new Promise((resolve, reject) => {
@@ -54,13 +53,13 @@
             const imgA = await loadImage(fileA);
             const imgB = await loadImage(fileB);
 
-            const imageA = tf.browser.fromPixels(imgA).mean(2).toFloat();
-            const imageB = tf.browser.fromPixels(imgB).mean(2).toFloat();
+            const imageA = tf.browser.fromPixels(imgA).mean(2).toFloat().expandDims(0).expandDims(-1);
+            const imageB = tf.browser.fromPixels(imgB).mean(2).toFloat().expandDims(0).expandDims(-1);
 
             const mse = tf.losses.meanSquaredError(imageA, imageB).arraySync();
             const psnr = 10 * Math.log10(255 * 255 / mse);
 
-            const ssim = tf.image.ssim(imageA.expandDims(-1), imageB.expandDims(-1)).arraySync();
+            const ssim = tf.image.ssim(imageA, imageB).arraySync();
 
             const snr = 10 * Math.log10(tf.norm(imageA).arraySync() ** 2 / mse);
 
