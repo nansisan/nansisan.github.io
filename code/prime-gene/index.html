@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>素数生成ツール</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <h1>素数生成ツール</h1>
+    <form>
+        <label for="limit">上限値:</label>
+        <input type="number" id="limit" value="100000000">
+        <button id="generate-btn" type="button">生成</button>
+        <button id="download-btn" disabled>ダウンロード</button>
+    </form>
+	<p>素数の生成には時間がかかります。できるだけ高速に動作するように設計していますがご了承ください。また正常に素数生成できるのは10億までです。（それ以上は何も問題ないはずなのに動作しない。)</p>
+    <div id="result">
+        <p id="prime-count"></p>
+        <p id="execution-time"></p>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
