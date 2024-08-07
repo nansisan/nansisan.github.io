@@ -1,0 +1,41 @@
+body {
+    font-family: Arial, sans-serif;
+}
+
+form {
+    margin-bottom: 20px;
+}
+
+label {
+    display: inline-block;
+    width: 100px;
+}
+
+input[type="number"] {
+    width: 200px;
+    border-radius: 0;
+    border: 1px solid black;
+    padding: 1em;
+}
+
+button {
+    margin-left: 10px;
+    background: #007bff;
+    border: none;
+    color: white;
+    padding: 1em;
+}
+
+button:hover {
+    background: #0060c6;
+}
+ 
+
+#result {
+    margin-top: 20px;
+}
+
+#prime-count, #execution-time {
+    font-size: 18px;
+    font-weight: bold;
+}
